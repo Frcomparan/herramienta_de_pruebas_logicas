@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="es" class="h-full bg-gray-50">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Resultados de validación de argumentos lógicos con pruebas deductivas">
+    <title>Resultados - Herramienta de Pruebas Lógicas</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body class="h-full">
+    <div class="min-h-full">
+        <!-- Header -->
+        <header class="bg-indigo-600 shadow">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex justify-between items-center py-6">
+                    <div class="flex items-center">
+                        <i class="fas fa-brain text-white text-2xl mr-3"></i>
+                        <h1 class="text-2xl font-bold text-white">Herramienta de Pruebas Lógicas</h1>
+                    </div>
+                    <a href="/" class="inline-flex items-center px-4 py-2 border border-indigo-200 text-sm font-medium rounded-md text-indigo-100 hover:bg-indigo-500">
+                        <i class="fas fa-arrow-left mr-2"></i>
+                        Nuevo Análisis
+                    </a>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+            <!-- Argument Summary -->
+            <div class="bg-white shadow-lg rounded-lg overflow-hidden mb-8">
+                <div class="px-6 py-4 bg-gray-50 border-b border-gray-200">
+                    <h2 class="text-xl font-bold text-gray-900">
+                        <i class="fas fa-file-text mr-2"></i>
+                        Argumento Analizado
+                    </h2>
+                </div>
+                <div class="px-6 py-4">
+                    <div class="space-y-4">
+                        <!-- Original Premises -->
+                        <div>
+                            <h3 class="text-sm font-semibold text-gray-700 mb-2">Premisas Originales:</h3>
+                            <ul class="space-y-1">
+                                {% for premise in premises %}
+                                <li class="text-gray-600">
+                                    <span class="bg-blue-100 text-blue-800 text-xs font-medium px-2 py-1 rounded">P{{ loop.index }}</span>
+                                    {{ premise }}
+                                </li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+
+                        <!-- Original Conclusion -->
+                        <div>
+                            <h3 class="text-sm font-semibold text-gray-700 mb-2">Conclusión Original:</h3>
+                            <p class="text-gray-600">
+                                <span class="bg-green-100 text-green-800 text-xs font-medium px-2 py-1 rounded">C</span>
+                                {{ conclusion }}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Symbolic Translation -->
+            <div class="bg-white shadow-lg rounded-lg overflow-hidden mb-8">
+                <div class="px-6 py-4 bg-gray-50 border-b border-gray-200">
+                    <h2 class="text-xl font-bold text-gray-900">
+                        <i class="fas fa-code mr-2"></i>
+                        Traducción Simbólica
+                    </h2>
+                </div>
+                <div class="px-6 py-4">
+                    <div class="space-y-4">
+                        <!-- Variables -->
+                        {% if result.variables_identified %}
+                        <div>
+                            <h3 class="text-sm font-semibold text-gray-700 mb-2">Variables Proposicionales:</h3>
+                            <div class="bg-gray-50 rounded-lg p-3">
+                                {% for variable in result.variables_identified %}
+                                <div class="text-sm text-gray-700 mb-1">{{ variable }}</div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                        {% endif %}
+
+                        <!-- Symbolic Premises -->
+                        <div>
+                            <h3 class="text-sm font-semibold text-gray-700 mb-2">Premisas Simbólicas:</h3>
+                            <div class="space-y-2">
+                                {% for premise in result.symbolic_premises %}
+                                <div class="bg-blue-50 border border-blue-200 rounded-lg p-3">
+                                    <code class="text-lg font-mono text-blue-800">{{ premise }}</code>
+                                </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+
+                        <!-- Symbolic Conclusion -->
+                        <div>
+                            <h3 class="text-sm font-semibold text-gray-700 mb-2">Conclusión Simbólica:</h3>
+                            <div class="bg-green-50 border border-green-200 rounded-lg p-3">
+                                <code class="text-lg font-mono text-green-800">{{ result.symbolic_conclusion }}</code>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Validation Result -->
+            <div class="bg-white shadow-lg rounded-lg overflow-hidden mb-8">
+                {% if result.is_valid %}
+                <!-- Valid Argument -->
+                <div class="px-6 py-4 bg-green-50 border-b border-green-200">
+                    <div class="flex items-center">
+                        <i class="fas fa-check-circle text-green-600 text-2xl mr-3"></i>
+                        <div>
+                            <h2 class="text-xl font-bold text-green-800">Argumento Válido ✅</h2>
+                            <p class="text-sm text-green-600 mt-1">La conclusión se sigue lógicamente de las premisas</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Proof Steps -->
+                {% if result.proof_steps %}
+                <div class="px-6 py-4">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4">
+                        <i class="fas fa-list-ol mr-2"></i>
+                        Derivación Paso a Paso
+                    </h3>
+                    <div class="space-y-3">
+                        {% for step in result.proof_steps %}
+                        <div class="border border-gray-200 rounded-lg p-4 bg-gray-50">
+                            <div class="flex items-start justify-between">
+                                <div class="flex-1">
+                                    <div class="flex items-center mb-2">
+                                        <span class="bg-indigo-100 text-indigo-800 text-sm font-semibold px-2 py-1 rounded mr-3">
+                                            Paso {{ step.step_number }}
+                                        </span>
+                                        {% if step.rule_applied %}
+                                        <span class="bg-yellow-100 text-yellow-800 text-xs font-medium px-2 py-1 rounded">
+                                            {{ step.rule_applied }}
+                                        </span>
+                                        {% endif %}
+                                    </div>
+                                    <div class="space-y-2">
+                                        <p class="text-gray-700">{{ step.statement }}</p>
+                                        <div class="bg-white border border-gray-200 rounded p-2">
+                                            <code class="text-indigo-600 font-mono">{{ step.symbolic_form }}</code>
+                                        </div>
+                                        <p class="text-sm text-gray-600">
+                                            <i class="fas fa-info-circle mr-1"></i>
+                                            {{ step.justification }}
+                                        </p>
+                                        {% if step.references %}
+                                        <p class="text-xs text-gray-500">
+                                            Referencias: Pasos {{ step.references | join(', ') }}
+                                        </p>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                {% endif %}
+
+                {% else %}
+                <!-- Invalid Argument -->
+                <div class="px-6 py-4 bg-red-50 border-b border-red-200">
+                    <div class="flex items-center">
+                        <i class="fas fa-times-circle text-red-600 text-2xl mr-3"></i>
+                        <div>
+                            <h2 class="text-xl font-bold text-red-800">Argumento Inválido ❌</h2>
+                            <p class="text-sm text-red-600 mt-1">La conclusión no se sigue lógicamente de las premisas</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Counterexample -->
+                {% if result.counterexample %}
+                <div class="px-6 py-4">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4">
+                        <i class="fas fa-exclamation-triangle mr-2"></i>
+                        Contraejemplo
+                    </h3>
+                    <div class="bg-red-50 border border-red-200 rounded-lg p-4">
+                        <div class="space-y-3">
+                            <!-- Variable Assignments -->
+                            <div>
+                                <h4 class="font-semibold text-red-800 mb-2">Asignación de Valores de Verdad:</h4>
+                                <div class="grid grid-cols-2 gap-2">
+                                    {% for var, value in result.counterexample.variable_assignments.items() %}
+                                    <div class="bg-white border border-red-200 rounded p-2 text-center">
+                                        <span class="font-mono text-lg">{{ var }} = </span>
+                                        <span class="font-semibold {{ 'text-green-600' if value else 'text-red-600' }}">
+                                            {{ 'Verdadero' if value else 'Falso' }}
+                                        </span>
+                                    </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+
+                            <!-- Evaluation -->
+                            <div>
+                                <h4 class="font-semibold text-red-800 mb-2">Evaluación:</h4>
+                                <div class="space-y-2">
+                                    <div class="flex items-center">
+                                        <span class="text-sm text-gray-700 mr-2">Premisas:</span>
+                                        {% for eval in result.counterexample.premises_evaluation %}
+                                        <span class="ml-1 px-2 py-1 text-xs font-semibold rounded {{ 'bg-green-100 text-green-800' if eval else 'bg-red-100 text-red-800' }}">
+                                            {{ 'V' if eval else 'F' }}
+                                        </span>
+                                        {% endfor %}
+                                    </div>
+                                    <div class="flex items-center">
+                                        <span class="text-sm text-gray-700 mr-2">Conclusión:</span>
+                                        <span class="ml-1 px-2 py-1 text-xs font-semibold rounded {{ 'bg-green-100 text-green-800' if result.counterexample.conclusion_evaluation else 'bg-red-100 text-red-800' }}">
+                                            {{ 'V' if result.counterexample.conclusion_evaluation else 'F' }}
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Explanation -->
+                            <div>
+                                <h4 class="font-semibold text-red-800 mb-2">Explicación:</h4>
+                                <p class="text-sm text-red-700">{{ result.counterexample.explanation }}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+                {% endif %}
+            </div>
+
+            <!-- Processing Notes -->
+            {% if result.processing_notes %}
+            <div class="bg-white shadow-lg rounded-lg overflow-hidden">
+                <div class="px-6 py-4 bg-yellow-50 border-b border-yellow-200">
+                    <h2 class="text-lg font-bold text-yellow-800">
+                        <i class="fas fa-sticky-note mr-2"></i>
+                        Notas del Procesamiento
+                    </h2>
+                </div>
+                <div class="px-6 py-4">
+                    <ul class="space-y-2">
+                        {% for note in result.processing_notes %}
+                        <li class="text-sm text-gray-600">
+                            <i class="fas fa-arrow-right text-yellow-500 mr-2"></i>
+                            {{ note }}
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+            {% endif %}
+
+            <!-- Action Buttons -->
+            <div class="flex justify-center space-x-4 mt-8">
+                <a href="/" class="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                    <i class="fas fa-plus mr-2"></i>
+                    Analizar Nuevo Argumento
+                </a>
+                <button onclick="window.print()" class="inline-flex items-center px-6 py-3 border border-gray-300 shadow-sm text-base font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                    <i class="fas fa-print mr-2"></i>
+                    Imprimir Resultados
+                </button>
+            </div>
+        </main>
+
+        <!-- Footer -->
+        <footer class="bg-gray-800 mt-12">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+                <div class="flex justify-between items-center">
+                    <p class="text-gray-400 text-sm">
+                        © 2025 Herramienta de Pruebas Lógicas - Matemáticas Discretas
+                    </p>
+                    <div class="flex space-x-4">
+                        <i class="fab fa-python text-gray-400 text-lg"></i>
+                        <i class="fas fa-cog text-gray-400 text-lg"></i>
+                        <i class="fab fa-docker text-gray-400 text-lg"></i>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </div>
+</body>
+</html>
