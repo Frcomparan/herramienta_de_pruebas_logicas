@@ -1,0 +1,2 @@
+# Placeholder file to ensure static directory is included in Docker builds
+# This file ensures the static directory exists even when empty

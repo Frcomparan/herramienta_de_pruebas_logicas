@@ -26,9 +26,16 @@ print(f"🔧 PYTHONPATH: {os.environ.get('PYTHONPATH', 'Not set')}")
 print(f"🔑 GEMINI_API_KEY configured: {'Yes' if os.environ.get('GEMINI_API_KEY') else 'No'}")
 print(f"🌐 PORT: {os.environ.get('PORT', '8080')}")
 
-# Setup templates and static files
+# Setup templates
 templates = Jinja2Templates(directory="templates")
-app.mount("/static", StaticFiles(directory="static"), name="static")
+
+# Setup static files (only if directory exists)
+static_dir = Path("static")
+if static_dir.exists() and static_dir.is_dir():
+    app.mount("/static", StaticFiles(directory="static"), name="static")
+    print("✅ Static files directory mounted")
+else:
+    print("⚠️ Static directory not found, skipping static files mounting")
 
 # Initialize logic processor
 try:
