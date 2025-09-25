@@ -1,6 +1,10 @@
 # Herramienta de Pruebas Lógicas 🧠
 
-Una aplicación web monolítica y contenerizada desarrollada con FastAPI que permite a los usuarios introducir argumentos en lenguaje natural, analizarlos y generar pruebas deductivas paso a paso utilizando reglas de inferencia formales. Esta herramienta está diseñada específicamente para estudiantes de **Matemáticas Discretas** que deseen comprender y practicar con la lógica proposicional de manera interactiva.
+Una aplicación web monolítica y contenerizada desarrollada con FastAPI que permite a los usuarios introducir argumentos en lenguaje natural, analizarlos y generar pruebas deductivas paso a paso utilizando reglas de inferencia formales. Esta herramienta está diseñada específicamente para estudiantes de **Matemáticas Discretas** que deseen compre### Error: Puerto ocupado (Local)
+```
+Error: Port 8080 is already in use
+```
+**Solución:** Cambiar el puerto en `docker-compose.yml` o parar otros servicios en el puerto 8080.y practicar con la lógica proposicional de manera interactiva.
 
 ## 🎯 Características Principales
 
@@ -100,7 +104,7 @@ docker-compose up --build
 ```
 
 4. **Acceder a la aplicación**:
-   - Abrir navegador en: http://localhost:8000
+   - Abrir navegador en: http://localhost:8080
    - La aplicación estará lista para usar
 
 ### Instalación Manual (Desarrollo)
@@ -130,7 +134,7 @@ cp .env.template .env
 cd app
 python main.py
 # o
-uvicorn main:app --reload --host 0.0.0.0 --port 8000
+uvicorn main:app --reload --host 0.0.0.0 --port 8080
 ```
 
 ## 📚 Guía de Uso
@@ -359,7 +363,7 @@ Si usas **Visual Studio Code**:
 
 Para probar la interfaz web:
 
-1. **Acceder** en http://localhost:8000
+1. **Acceder** en http://localhost:8080
 2. **Usar los casos de ejemplo** incluidos en `test_cases.py`
 3. **Verificar resultados** contra las expectativas documentadas
 
