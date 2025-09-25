@@ -1,25 +1,150 @@
 <!DOCTYPE html>
-<html lang="es" class="h-full bg-gray-50">
+<html lang="es" class="h-full bg-gray-900">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Herramienta de Pruebas Lógicas</title>
+    <meta name="description" content="Herramienta avanzada para validar argumentos lógicos usando inteligencia artificial. Analiza premisas y conclusiones con pruebas deductivas automáticas.">
+    
+    <!-- Favicon -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🧠</text></svg>">
+    
+    <!-- Open Graph Meta Tags -->
+    <meta property="og:title" content="Herramienta de Pruebas Lógicas - Matemáticas Discretas">
+    <meta property="og:description" content="Validador automático de argumentos lógicos con IA. Analiza premisas en lenguaje natural, convierte a lógica simbólica y genera pruebas deductivas paso a paso.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://logica-matematicas-discretas.herokuapp.com">
+    <meta property="og:image" content="https://via.placeholder.com/1200x630/0f1419/00d9ff?text=🧠+Herramienta+de+Pruebas+Lógicas">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" content="Herramienta de Pruebas Lógicas - Matemáticas Discretas TecNM">
+    <meta property="og:site_name" content="Matemáticas Discretas TecNM">
+    <meta property="og:locale" content="es_MX">
+    
+    <!-- Twitter Card Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Herramienta de Pruebas Lógicas - Matemáticas Discretas">
+    <meta name="twitter:description" content="Validador automático de argumentos lógicos con IA. Convierte lenguaje natural a lógica simbólica y genera pruebas deductivas.">
+    <meta name="twitter:image" content="https://via.placeholder.com/1200x630/0f1419/00d9ff?text=🧠+Herramienta+de+Pruebas+Lógicas">
+    <meta name="twitter:image:alt" content="Herramienta de Pruebas Lógicas - Matemáticas Discretas">
+    
+    <!-- Additional Meta Tags -->
+    <meta name="author" content="Francisco Comparan Pantoja">
+    <meta name="keywords" content="lógica, matemáticas discretas, argumentos lógicos, pruebas deductivas, inteligencia artificial, validación lógica, TecNM">
+    <meta name="robots" content="index, follow">
+    <meta name="theme-color" content="#00d9ff">
+    
+    <title>Herramienta de Pruebas Lógicas - Matemáticas Discretas</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        /* Colores LED/Fosforescente personalizados */
+        :root {
+            --neon-blue: #00d9ff;
+            --neon-yellow: #ffff00;
+            --dark-bg: #0a0a0f;
+            --dark-card: #1a1a2e;
+            --dark-border: #16213e;
+        }
+
+        .neon-glow-blue {
+            box-shadow: 0 0 10px var(--neon-blue), 0 0 20px var(--neon-blue), 0 0 30px var(--neon-blue);
+            text-shadow: 0 0 10px var(--neon-blue);
+        }
+
+        .neon-glow-yellow {
+            box-shadow: 0 0 10px var(--neon-yellow), 0 0 20px var(--neon-yellow), 0 0 30px var(--neon-yellow);
+            text-shadow: 0 0 10px var(--neon-yellow);
+        }
+
+        .neon-border-blue {
+            border: 2px solid var(--neon-blue);
+            box-shadow: 0 0 5px var(--neon-blue), inset 0 0 5px var(--neon-blue);
+        }
+
+        .neon-border-yellow {
+            border: 2px solid var(--neon-yellow);
+            box-shadow: 0 0 5px var(--neon-yellow), inset 0 0 5px var(--neon-yellow);
+        }
+
+        .led-pulse {
+            animation: pulse-led 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes pulse-led {
+            from { opacity: 0.7; }
+            to { opacity: 1; }
+        }
+
+        .bg-dark-custom { background-color: var(--dark-bg); }
+        .bg-card-custom { background-color: var(--dark-card); }
+        .border-custom { border-color: var(--dark-border); }
+
+        /* Input styles */
+        .input-neon {
+            background-color: rgba(26, 26, 46, 0.8);
+            border: 1px solid #00d9ff;
+            color: #ffffff;
+            transition: all 0.3s ease;
+        }
+
+        .input-neon:focus {
+            box-shadow: 0 0 15px var(--neon-blue);
+            border-color: var(--neon-blue);
+            outline: none;
+        }
+
+        .input-neon::placeholder {
+            color: #8892b0;
+        }
+
+        /* Button styles */
+        .btn-neon-blue {
+            background: linear-gradient(45deg, #001122, #003366);
+            border: 2px solid var(--neon-blue);
+            color: var(--neon-blue);
+            transition: all 0.3s ease;
+        }
+
+        .btn-neon-blue:hover {
+            background: var(--neon-blue);
+            color: #001122;
+            box-shadow: 0 0 20px var(--neon-blue);
+            text-shadow: none;
+        }
+
+        .btn-neon-yellow {
+            background: linear-gradient(45deg, #221100, #443300);
+            border: 2px solid var(--neon-yellow);
+            color: var(--neon-yellow);
+            transition: all 0.3s ease;
+        }
+
+        .btn-neon-yellow:hover {
+            background: var(--neon-yellow);
+            color: #221100;
+            box-shadow: 0 0 20px var(--neon-yellow);
+            text-shadow: none;
+        }
+    </style>
 </head>
-<body class="h-full">
+<body class="h-full bg-dark-custom">
     <div class="min-h-full">
         <!-- Header -->
-        <header class="bg-indigo-600 shadow">
+        <header class="bg-card-custom shadow-2xl neon-border-blue">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="flex justify-between items-center py-6">
                     <div class="flex items-center">
-                        <i class="fas fa-brain text-white text-2xl mr-3"></i>
-                        <h1 class="text-2xl font-bold text-white">Herramienta de Pruebas Lógicas</h1>
+                        <i class="fas fa-brain text-2xl mr-3 led-pulse" style="color: var(--neon-blue);"></i>
+                        <h1 class="text-2xl font-bold led-pulse" style="color: var(--neon-blue);">Herramienta de Pruebas Lógicas</h1>
                     </div>
-                    <div class="text-indigo-200 text-sm">
-                        <i class="fas fa-graduation-cap mr-1"></i>
-                        Matemáticas Discretas
+                    <div class="text-right">
+                        <div style="color: var(--neon-yellow);" class="text-sm font-medium">
+                            <i class="fas fa-graduation-cap mr-1"></i>
+                            Matemáticas Discretas
+                        </div>
+                        <div class="text-xs text-gray-400 mt-1">
+                            Maestría en Sistemas Computacionales
+                        </div>
                     </div>
                 </div>
             </div>
@@ -27,14 +152,14 @@
 
         <!-- Main Content -->
         <main class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-            <div class="bg-white shadow-lg rounded-lg overflow-hidden">
+            <div class="bg-card-custom shadow-2xl rounded-lg overflow-hidden neon-border-blue">
                 <!-- Instructions Card -->
-                <div class="bg-blue-50 border-l-4 border-blue-400 p-4 mb-6">
+                <div class="bg-card-custom neon-border-yellow p-4 mb-6 rounded-lg">
                     <div class="flex items-start">
-                        <i class="fas fa-info-circle text-blue-400 mt-1 mr-3"></i>
+                        <i class="fas fa-info-circle mt-1 mr-3 led-pulse" style="color: var(--neon-yellow);"></i>
                         <div>
-                            <h3 class="text-sm font-medium text-blue-800">Instrucciones</h3>
-                            <div class="mt-2 text-sm text-blue-700">
+                            <h3 class="text-sm font-medium" style="color: var(--neon-yellow);">Instrucciones</h3>
+                            <div class="mt-2 text-sm text-gray-300">
                                 <p>Introduce tu argumento en lenguaje natural. El sistema analizará la validez lógica y generará una prueba deductiva paso a paso usando reglas de inferencia formales.</p>
                                 <ul class="list-disc list-inside mt-2 space-y-1">
                                     <li>Escribe cada premisa en un campo separado</li>
@@ -48,12 +173,12 @@
 
                 <!-- Error Display -->
                 {% if error %}
-                <div class="bg-red-50 border-l-4 border-red-400 p-4 mb-6">
+                <div class="bg-red-900 border border-red-500 p-4 mb-6 rounded-lg" style="border-color: #ff3333; box-shadow: 0 0 10px #ff3333;">
                     <div class="flex">
-                        <i class="fas fa-exclamation-circle text-red-400 mt-1 mr-3"></i>
+                        <i class="fas fa-exclamation-circle mt-1 mr-3 led-pulse" style="color: #ff3333;"></i>
                         <div>
-                            <h3 class="text-sm font-medium text-red-800">Error</h3>
-                            <p class="mt-2 text-sm text-red-700">{{ error }}</p>
+                            <h3 class="text-sm font-medium" style="color: #ff3333;">Error</h3>
+                            <p class="mt-2 text-sm text-gray-300">{{ error }}</p>
                         </div>
                     </div>
                 </div>
@@ -64,14 +189,14 @@
                     <form method="POST" action="/validate" class="space-y-6">
                         <!-- Premises Section -->
                         <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-3">
+                            <label class="block text-sm font-medium mb-3" style="color: var(--neon-blue);">
                                 <i class="fas fa-list-ol mr-2"></i>
                                 Premisas del Argumento
                             </label>
                             
                             {% for i in range(num_premises) %}
                             <div class="mb-3">
-                                <label for="premise-{{ i }}" class="block text-xs font-medium text-gray-600 mb-1">
+                                <label for="premise-{{ i }}" class="block text-xs font-medium text-gray-400 mb-1">
                                     Premisa {{ i + 1 }}
                                 </label>
                                 <input 
@@ -80,7 +205,7 @@
                                     name="premises"
                                     value="{{ premises[i] if i < premises|length else '' }}"
                                     placeholder="Ejemplo: Si llueve entonces me mojo"
-                                    class="block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm px-3 py-2 border"
+                                    class="block w-full rounded-md px-3 py-2 input-neon"
                                 >
                             </div>
                             {% endfor %}
@@ -90,7 +215,7 @@
                                 type="submit" 
                                 name="action" 
                                 value="add_premise"
-                                class="inline-flex items-center px-3 py-2 border border-gray-300 shadow-sm text-sm leading-4 font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 mt-2"
+                                class="inline-flex items-center px-3 py-2 text-sm leading-4 font-medium rounded-md mt-2 btn-neon-yellow"
                             >
                                 <i class="fas fa-plus mr-2"></i>
                                 Añadir Premisa
@@ -99,7 +224,7 @@
 
                         <!-- Conclusion Section -->
                         <div>
-                            <label for="conclusion" class="block text-sm font-medium text-gray-700 mb-2">
+                            <label for="conclusion" class="block text-sm font-medium mb-2" style="color: var(--neon-blue);">
                                 <i class="fas fa-bullseye mr-2"></i>
                                 Conclusión
                             </label>
@@ -110,7 +235,7 @@
                                 value="{{ conclusion }}"
                                 placeholder="Ejemplo: Me mojo"
                                 required
-                                class="block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm px-3 py-2 border"
+                                class="block w-full rounded-md px-3 py-2 input-neon"
                             >
                         </div>
 
@@ -120,7 +245,7 @@
                                 type="submit" 
                                 name="action" 
                                 value="validate"
-                                class="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors duration-200"
+                                class="inline-flex items-center px-6 py-3 text-base font-medium rounded-md btn-neon-blue transition-all duration-300"
                             >
                                 <i class="fas fa-check-circle mr-2"></i>
                                 Validar Argumento
@@ -131,38 +256,38 @@
             </div>
 
             <!-- Examples Section -->
-            <div class="mt-8 bg-white shadow-lg rounded-lg overflow-hidden">
-                <div class="px-6 py-4 bg-gray-50 border-b border-gray-200">
-                    <h3 class="text-lg font-medium text-gray-900">
-                        <i class="fas fa-lightbulb mr-2 text-yellow-500"></i>
+            <div class="mt-8 bg-card-custom shadow-2xl rounded-lg overflow-hidden neon-border-yellow">
+                <div class="px-6 py-4 border-b border-custom">
+                    <h3 class="text-lg font-medium" style="color: var(--neon-yellow);">
+                        <i class="fas fa-lightbulb mr-2 led-pulse"></i>
                         Ejemplos de Argumentos
                     </h3>
                 </div>
                 <div class="px-6 py-4">
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <!-- Valid Example -->
-                        <div class="bg-green-50 border border-green-200 rounded-lg p-4">
-                            <h4 class="font-semibold text-green-800 mb-2">
-                                <i class="fas fa-check text-green-600 mr-1"></i>
+                        <div class="bg-green-900 border rounded-lg p-4" style="border-color: #00ff88; box-shadow: 0 0 10px rgba(0, 255, 136, 0.3);">
+                            <h4 class="font-semibold mb-2" style="color: #00ff88;">
+                                <i class="fas fa-check mr-1"></i>
                                 Argumento Válido (Modus Ponens)
                             </h4>
-                            <div class="text-sm text-green-700 space-y-1">
-                                <p><strong>Premisa 1:</strong> Si llueve entonces la calle se moja</p>
-                                <p><strong>Premisa 2:</strong> Llueve</p>
-                                <p><strong>Conclusión:</strong> La calle se moja</p>
+                            <div class="text-sm text-gray-300 space-y-1">
+                                <p><strong style="color: var(--neon-blue);">Premisa 1:</strong> Si llueve entonces la calle se moja</p>
+                                <p><strong style="color: var(--neon-blue);">Premisa 2:</strong> Llueve</p>
+                                <p><strong style="color: var(--neon-yellow);">Conclusión:</strong> La calle se moja</p>
                             </div>
                         </div>
 
                         <!-- Invalid Example -->
-                        <div class="bg-red-50 border border-red-200 rounded-lg p-4">
-                            <h4 class="font-semibold text-red-800 mb-2">
-                                <i class="fas fa-times text-red-600 mr-1"></i>
+                        <div class="bg-red-900 border rounded-lg p-4" style="border-color: #ff3333; box-shadow: 0 0 10px rgba(255, 51, 51, 0.3);">
+                            <h4 class="font-semibold mb-2" style="color: #ff3333;">
+                                <i class="fas fa-times mr-1"></i>
                                 Argumento Inválido (Afirmación del Consecuente)
                             </h4>
-                            <div class="text-sm text-red-700 space-y-1">
-                                <p><strong>Premisa 1:</strong> Si llueve entonces la calle se moja</p>
-                                <p><strong>Premisa 2:</strong> La calle se moja</p>
-                                <p><strong>Conclusión:</strong> Llueve</p>
+                            <div class="text-sm text-gray-300 space-y-1">
+                                <p><strong style="color: var(--neon-blue);">Premisa 1:</strong> Si llueve entonces la calle se moja</p>
+                                <p><strong style="color: var(--neon-blue);">Premisa 2:</strong> La calle se moja</p>
+                                <p><strong style="color: var(--neon-yellow);">Conclusión:</strong> Llueve</p>
                             </div>
                         </div>
                     </div>
@@ -170,17 +295,43 @@
             </div>
         </main>
 
+        <!-- Academic Credits Section -->
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 mt-12">
+            <div class="bg-card-custom shadow-2xl rounded-lg overflow-hidden neon-border-blue">
+                <div class="px-6 py-4 text-center">
+                    <h3 class="text-lg font-semibold mb-4" style="color: var(--neon-yellow);">
+                        <i class="fas fa-university mr-2 led-pulse"></i>
+                        Créditos Académicos
+                    </h3>
+                    <div class="space-y-2 text-gray-300">
+                        <p class="font-medium" style="color: var(--neon-blue);">Francisco Comparan Pantoja</p>
+                        <p class="text-sm">Matemáticas Discretas</p>
+                        <p class="font-medium" style="color: var(--neon-yellow);">Maestría en Sistemas Computacionales</p>
+                        <p class="text-sm">Dirigido por: <span style="color: var(--neon-blue);">Dr. Santiago Arceo Díaz</span></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <!-- Footer -->
-        <footer class="bg-gray-800 mt-12">
+        <footer class="bg-gray-900 mt-12 border-t border-custom">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-                <div class="flex justify-between items-center">
+                <div class="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
                     <p class="text-gray-400 text-sm">
                         © 2025 Herramienta de Pruebas Lógicas - Matemáticas Discretas
                     </p>
-                    <div class="flex space-x-4">
-                        <i class="fab fa-python text-gray-400 text-lg"></i>
-                        <i class="fas fa-cog text-gray-400 text-lg"></i>
-                        <i class="fab fa-docker text-gray-400 text-lg"></i>
+                    <div class="flex items-center space-x-4 text-xs text-gray-500">
+                        <span style="color: var(--neon-blue);">
+                            <i class="fab fa-python mr-1"></i>FastAPI
+                        </span>
+                        <span>•</span>
+                        <span style="color: var(--neon-yellow);">
+                            <i class="fas fa-brain mr-1"></i>Google Gemini AI
+                        </span>
+                        <span>•</span>
+                        <span style="color: var(--neon-blue);">
+                            <i class="fab fa-docker mr-1"></i>Docker
+                        </span>
                     </div>
                 </div>
             </div>
