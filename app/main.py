@@ -21,12 +21,23 @@ app = FastAPI(
     version="1.0.0"
 )
 
+print("✅ FastAPI app initialized successfully")
+print(f"🔧 PYTHONPATH: {os.environ.get('PYTHONPATH', 'Not set')}")
+print(f"🔑 GEMINI_API_KEY configured: {'Yes' if os.environ.get('GEMINI_API_KEY') else 'No'}")
+print(f"🌐 PORT: {os.environ.get('PORT', '8080')}")
+
 # Setup templates and static files
 templates = Jinja2Templates(directory="templates")
 app.mount("/static", StaticFiles(directory="static"), name="static")
 
 # Initialize logic processor
-logic_processor = LogicProcessor()
+try:
+    logic_processor = LogicProcessor()
+    print("✅ Logic processor initialized successfully")
+except Exception as e:
+    print(f"⚠️ Warning: Could not initialize logic processor: {e}")
+    print("📝 The app will start but may not process arguments correctly")
+    logic_processor = None
 
 @app.get("/", response_class=HTMLResponse)
 async def home(request: Request, num_premises: int = 2):
@@ -83,6 +94,9 @@ async def validate_argument(
         )
     
     try:
+        if logic_processor is None:
+            raise Exception("Logic processor not initialized - check GEMINI_API_KEY")
+        
         # Process the argument
         argument_request = ArgumentRequest(premises=premises, conclusion=conclusion)
         result = await logic_processor.validate_argument(argument_request)
@@ -116,7 +130,7 @@ async def health_check():
         "status": "healthy", 
         "message": "Logic Proofs Tool is running",
         "port": os.environ.get("PORT", "8080"),
-        "pythonpath": os.environ.get("PYTHONPATH", "Not set"),
+        "logic_processor": "initialized" if logic_processor else "not_initialized",
         "gemini_configured": bool(os.environ.get("GEMINI_API_KEY"))
     }
 
@@ -128,15 +142,6 @@ async def startup_check():
 if __name__ == "__main__":
     import uvicorn
     port = int(os.environ.get("PORT", 8080))
-    print(f"🚀 Starting server on port {port}")
-    print(f"🔧 Environment: {os.environ.get('PYTHONPATH', 'Not set')}")
-    print(f"🔑 API Key configured: {'Yes' if os.environ.get('GEMINI_API_KEY') else 'No'}")
+    print(f"Starting server on port {port}")
     
-    uvicorn.run(
-        app, 
-        host="0.0.0.0", 
-        port=port,
-        log_level="info",
-        access_log=True,
-        timeout_keep_alive=120
-    )
+    uvicorn.run(app, host="0.0.0.0", port=port)
