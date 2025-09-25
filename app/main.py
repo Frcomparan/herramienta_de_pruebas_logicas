@@ -112,16 +112,31 @@ async def validate_argument(
 @app.get("/health")
 async def health_check():
     """Health check endpoint"""
-    return {"status": "healthy", "message": "Logic Proofs Tool is running"}
+    return {
+        "status": "healthy", 
+        "message": "Logic Proofs Tool is running",
+        "port": os.environ.get("PORT", "8080"),
+        "pythonpath": os.environ.get("PYTHONPATH", "Not set"),
+        "gemini_configured": bool(os.environ.get("GEMINI_API_KEY"))
+    }
+
+@app.get("/startup")
+async def startup_check():
+    """Simple startup check - no dependencies"""
+    return {"status": "ok", "timestamp": "2025-09-25"}
 
 if __name__ == "__main__":
     import uvicorn
     port = int(os.environ.get("PORT", 8080))
     print(f"🚀 Starting server on port {port}")
+    print(f"🔧 Environment: {os.environ.get('PYTHONPATH', 'Not set')}")
+    print(f"🔑 API Key configured: {'Yes' if os.environ.get('GEMINI_API_KEY') else 'No'}")
+    
     uvicorn.run(
         app, 
         host="0.0.0.0", 
         port=port,
         log_level="info",
-        access_log=True
+        access_log=True,
+        timeout_keep_alive=120
     )

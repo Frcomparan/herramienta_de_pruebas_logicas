@@ -37,9 +37,5 @@ USER appuser
 # Expose port 8080 for Cloud Run
 EXPOSE 8080
 
-# Health check (optional for Cloud Run)
-HEALTHCHECK --interval=30s --timeout=30s --start-period=40s --retries=3 \
-    CMD python -c "import requests; requests.get('http://localhost:8080/health', timeout=10)" || exit 1
-
-# Run the application - Cloud Run will set PORT automatically
-CMD exec uvicorn main:app --host 0.0.0.0 --port ${PORT:-8080}
+# Run the application with optimized settings for Cloud Run
+CMD ["python", "-m", "uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8080", "--workers", "1", "--timeout-keep-alive", "120"]
