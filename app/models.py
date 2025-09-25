@@ -17,6 +17,11 @@ class InferenceRule(str, Enum):
     ADDITION = "Adición"
     CONSTRUCTIVE_DILEMMA = "Dilema Constructivo"
     RESOLUTION = "Resolución"
+    DOUBLE_NEGATION = "Doble Negación"
+    CONTRAPOSITION = "Contraposición"
+    DE_MORGAN = "Ley de De Morgan"
+    EXPORTATION = "Exportación"
+    TAUTOLOGY = "Tautología"
     PREMISE = "Premisa"
 
 class ProofStep(BaseModel):
