@@ -126,6 +126,28 @@
             text-shadow: none;
         }
 
+        /* Loading spinner */
+        .spinner {
+            border: 2px solid transparent;
+            border-top: 2px solid var(--neon-blue);
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            animation: spin 1s linear infinite;
+            display: inline-block;
+            flex-shrink: 0;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .btn-loading {
+            opacity: 0.7;
+            cursor: not-allowed;
+        }
+
         /* Responsive Design */
         @media (max-width: 640px) {
             .neon-glow-blue, .neon-glow-yellow {
@@ -215,72 +237,95 @@
 
                 <!-- Argument Form -->
                 <div class="px-3 sm:px-4 lg:px-6 py-4 sm:py-6 lg:py-8">
-                    <form method="POST" action="/validate" class="space-y-4 sm:space-y-6">
-                        <!-- Premises Section -->
+                    <!-- Premises Section with separate form -->
+                    <div class="space-y-4 sm:space-y-6">
                         <div>
                             <label class="block text-xs sm:text-sm font-medium mb-3" style="color: var(--neon-blue);">
                                 <i class="fas fa-list-ol mr-1 sm:mr-2"></i>
                                 Premisas del Argumento
                             </label>
                             
+                            <form method="POST" action="/validate" id="premises-form">
+                                {% for i in range(num_premises) %}
+                                <div class="mb-3">
+                                    <label for="premise-{{ i }}" class="block text-xs font-medium text-gray-400 mb-1">
+                                        Premisa {{ i + 1 }}
+                                    </label>
+                                    <input 
+                                        type="text" 
+                                        id="premise-{{ i }}"
+                                        name="premises"
+                                        value="{{ premises[i] if i < premises|length else '' }}"
+                                        placeholder="Ejemplo: Si llueve entonces me mojo"
+                                        class="block w-full rounded-md px-3 py-2 text-sm sm:text-base input-neon"
+                                    >
+                                </div>
+                                {% endfor %}
+
+                                <!-- Hidden field for conclusion to preserve it when adding premises -->
+                                <input type="hidden" name="conclusion" value="{{ conclusion }}">
+
+                                <!-- Add Premise Button -->
+                                <button 
+                                    type="submit" 
+                                    name="action" 
+                                    value="add_premise"
+                                    class="inline-flex items-center px-3 py-2 text-xs sm:text-sm leading-4 font-medium rounded-md mt-2 btn-neon-yellow w-full sm:w-auto justify-center sm:justify-start"
+                                >
+                                    <i class="fas fa-plus mr-1 sm:mr-2"></i>
+                                    Añadir Premisa
+                                </button>
+                            </form>
+                        </div>
+
+                        <!-- Validation Form -->
+                        <form method="POST" action="/validate" id="validation-form" class="space-y-4 sm:space-y-6">
+                            <!-- Hidden action input to ensure it's always sent -->
+                            <input type="hidden" name="action" value="validate">
+                            
+                            <!-- Hidden premises inputs for validation -->
                             {% for i in range(num_premises) %}
-                            <div class="mb-3">
-                                <label for="premise-{{ i }}" class="block text-xs font-medium text-gray-400 mb-1">
-                                    Premisa {{ i + 1 }}
+                            <input type="hidden" name="premises" id="hidden-premise-{{ i }}" value="{{ premises[i] if i < premises|length else '' }}">
+                            {% endfor %}
+
+                            <!-- Conclusion Section -->
+                            <div>
+                                <label for="conclusion" class="block text-xs sm:text-sm font-medium mb-2" style="color: var(--neon-blue);">
+                                    <i class="fas fa-bullseye mr-1 sm:mr-2"></i>
+                                    Conclusión
                                 </label>
                                 <input 
                                     type="text" 
-                                    id="premise-{{ i }}"
-                                    name="premises"
-                                    value="{{ premises[i] if i < premises|length else '' }}"
-                                    placeholder="Ejemplo: Si llueve entonces me mojo"
+                                    id="conclusion"
+                                    name="conclusion"
+                                    value="{{ conclusion }}"
+                                    placeholder="Ejemplo: Me mojo"
+                                    required
                                     class="block w-full rounded-md px-3 py-2 text-sm sm:text-base input-neon"
                                 >
                             </div>
-                            {% endfor %}
 
-                            <!-- Add Premise Button -->
-                            <button 
-                                type="submit" 
-                                name="action" 
-                                value="add_premise"
-                                class="inline-flex items-center px-3 py-2 text-xs sm:text-sm leading-4 font-medium rounded-md mt-2 btn-neon-yellow w-full sm:w-auto justify-center sm:justify-start"
-                            >
-                                <i class="fas fa-plus mr-1 sm:mr-2"></i>
-                                Añadir Premisa
-                            </button>
-                        </div>
-
-                        <!-- Conclusion Section -->
-                        <div>
-                            <label for="conclusion" class="block text-xs sm:text-sm font-medium mb-2" style="color: var(--neon-blue);">
-                                <i class="fas fa-bullseye mr-1 sm:mr-2"></i>
-                                Conclusión
-                            </label>
-                            <input 
-                                type="text" 
-                                id="conclusion"
-                                name="conclusion"
-                                value="{{ conclusion }}"
-                                placeholder="Ejemplo: Me mojo"
-                                required
-                                class="block w-full rounded-md px-3 py-2 text-sm sm:text-base input-neon"
-                            >
-                        </div>
-
-                        <!-- Submit Button -->
-                        <div class="flex justify-center pt-4">
-                            <button 
-                                type="submit" 
-                                name="action" 
-                                value="validate"
-                                class="inline-flex items-center px-4 sm:px-6 py-2 sm:py-3 text-sm sm:text-base font-medium rounded-md btn-neon-blue transition-all duration-300 w-full sm:w-auto justify-center"
-                            >
-                                <i class="fas fa-check-circle mr-1 sm:mr-2"></i>
-                                Validar Argumento
-                            </button>
-                        </div>
-                    </form>
+                            <!-- Submit Button -->
+                            <div class="flex justify-center pt-4">
+                                <button 
+                                    type="submit" 
+                                    name="action" 
+                                    value="validate"
+                                    id="validate-btn"
+                                    class="inline-flex items-center px-4 sm:px-6 py-2 sm:py-3 text-sm sm:text-base font-medium rounded-md btn-neon-blue transition-all duration-300 w-full sm:w-auto justify-center"
+                                >
+                                    <span id="btn-text" class="flex items-center justify-center">
+                                        <i class="fas fa-check-circle mr-1 sm:mr-2"></i>
+                                        Validar Argumento
+                                    </span>
+                                    <span id="btn-loading" class="hidden">
+                                        <div class="spinner mr-2"></div>
+                                        Procesando...
+                                    </span>
+                                </button>
+                            </div>
+                        </form>
+                    </div>
                 </div>
             </div>
 
@@ -366,5 +411,112 @@
             </div>
         </footer>
     </div>
+
+    <script>
+        // Sincronizar campos de premisas entre formularios
+        function syncPremises() {
+            const premiseInputs = document.querySelectorAll('[id^="premise-"]');
+            premiseInputs.forEach((input, index) => {
+                const hiddenInput = document.getElementById(`hidden-premise-${index}`);
+                if (hiddenInput) {
+                    hiddenInput.value = input.value;
+                }
+            });
+        }
+
+        // Sincronizar conclusión con campos ocultos cuando se añaden premisas
+        function syncConclusion() {
+            const conclusionInput = document.getElementById('conclusion');
+            const hiddenInputs = document.querySelectorAll('input[name="conclusion"]');
+            hiddenInputs.forEach(input => {
+                if (input !== conclusionInput) {
+                    input.value = conclusionInput.value;
+                }
+            });
+        }
+
+        // Event listeners
+        document.addEventListener('DOMContentLoaded', function() {
+            // Sincronizar campos cuando se escriba en las premisas
+            const premiseInputs = document.querySelectorAll('[id^="premise-"]');
+            premiseInputs.forEach(input => {
+                input.addEventListener('input', syncPremises);
+            });
+
+            // Sincronizar conclusión
+            const conclusionInput = document.getElementById('conclusion');
+            if (conclusionInput) {
+                conclusionInput.addEventListener('input', syncConclusion);
+            }
+
+            // Manejar formulario de premisas para asegurar que se envíen campos vacíos
+            const premisesForm = document.getElementById('premises-form');
+            if (premisesForm) {
+                premisesForm.addEventListener('submit', function(e) {
+                    // Asegurar que todos los campos vacíos se envíen
+                    const premiseInputs = document.querySelectorAll('[id^="premise-"]');
+                    premiseInputs.forEach(input => {
+                        if (!input.value || input.value.trim() === '') {
+                            input.value = ' '; // Espacio en lugar de vacío para que se envíe
+                        }
+                    });
+                });
+            }
+
+            // Manejar estado de carga en el formulario de validación
+            const validationForm = document.getElementById('validation-form');
+            const validateBtn = document.getElementById('validate-btn');
+            const btnText = document.getElementById('btn-text');
+            const btnLoading = document.getElementById('btn-loading');
+
+            if (validationForm && validateBtn) {
+                validationForm.addEventListener('submit', function(e) {
+                    // Sincronizar campos antes de enviar
+                    syncPremises();
+                    
+                    // Asegurar que todos los campos se envíen, incluyendo vacíos
+                    const validationPremiseInputs = validationForm.querySelectorAll('[name^="premise_"]');
+                    validationPremiseInputs.forEach(input => {
+                        if (!input.value || input.value.trim() === '') {
+                            input.value = ' '; // Espacio para que se envíe
+                        }
+                    });
+                    
+                    const validationConclusionInput = validationForm.querySelector('[name="conclusion"]');
+                    if (validationConclusionInput && (!validationConclusionInput.value || validationConclusionInput.value.trim() === '')) {
+                        validationConclusionInput.value = ' '; // Espacio para que se envíe
+                    }
+                    
+                    // Mostrar estado de carga
+                    validateBtn.disabled = true;
+                    validateBtn.classList.add('btn-loading');
+                    btnText.classList.add('hidden');
+                    btnLoading.classList.remove('hidden');
+                    btnLoading.classList.add('flex', 'items-center', 'justify-center');
+                    
+                    // Opcional: mostrar mensaje de progreso
+                    setTimeout(() => {
+                        if (btnLoading && !btnLoading.classList.contains('hidden')) {
+                            btnLoading.innerHTML = '<div class="spinner mr-2"></div>Analizando lógica...';
+                            // Asegurar que mantenga las clases de centrado
+                            btnLoading.className = 'flex items-center justify-center';
+                        }
+                    }, 2000);
+                    
+                    setTimeout(() => {
+                        if (btnLoading && !btnLoading.classList.contains('hidden')) {
+                            btnLoading.innerHTML = '<div class="spinner mr-2"></div>Generando prueba...';
+                            // Asegurar que mantenga las clases de centrado
+                            btnLoading.className = 'flex items-center justify-center';
+                        }
+                    }, 4000);
+                });
+            }
+
+            // Sincronizar al cargar la página
+            syncPremises();
+            syncConclusion();
+        });
+    </script>
 </body>
 </html>
