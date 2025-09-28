@@ -2,12 +2,6 @@
 
 Una aplicación web monolítica y contenerizada desarrollada con FastAPI que permite a los usuarios introducir argumentos en lenguaje natural, analizarlos y generar pruebas deductivas paso a paso utilizando reglas de inferencia formales. Esta herramienta está diseñada específicamente para estudiantes de **Matemáticas Discretas** que deseen compre
 
-### Error: Puerto ocupado (Local)
-```
-Error: Port 8080 is already in use
-```
-**Solución:** Cambiar el puerto en `docker-compose.yml` o parar otros servicios en el puerto 8080.y practicar con la lógica proposicional de manera interactiva.
-
 ## 🎯 Características Principales
 
 - **Interfaz Web Intuitiva**: Formulario HTML con campos dinámicos para premisas y conclusión, diseñado pensando en la experiencia del usuario estudiante
