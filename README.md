@@ -1,6 +1,8 @@
 # Herramienta de Pruebas Lógicas 🧠
 
-Una aplicación web monolítica y contenerizada desarrollada con FastAPI que permite a los usuarios introducir argumentos en lenguaje natural, analizarlos y generar pruebas deductivas paso a paso utilizando reglas de inferencia formales. Esta herramienta está diseñada específicamente para estudiantes de **Matemáticas Discretas** que deseen compre### Error: Puerto ocupado (Local)
+Una aplicación web monolítica y contenerizada desarrollada con FastAPI que permite a los usuarios introducir argumentos en lenguaje natural, analizarlos y generar pruebas deductivas paso a paso utilizando reglas de inferencia formales. Esta herramienta está diseñada específicamente para estudiantes de **Matemáticas Discretas** que deseen compre
+
+### Error: Puerto ocupado (Local)
 ```
 Error: Port 8080 is already in use
 ```
